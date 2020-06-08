@@ -1,0 +1,23 @@
+sudo: required
+
+services:
+  - docker:
+
+before_install:
+  - docker build -t shadrach19/client_test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true shadrach19/client_test npm run test  -- --coverage
+
+after_success:
+  - docker build -t shadrach19/multi-client ./client
+  - docker build -t shadrach19/multi-nginx ./nginx
+  - docker build -t shadrach19/multi-server ./server
+  - docker build -t shadrach19/multi-worker ./worker
+  # log in to docker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push images to docker hub
+  - docker push shadrach19/multi-client
+  - docker push shadrach19/multi-nginx
+  - docker push shadrach19/multi-server
+  - docker push shadrach19/multi-worker
