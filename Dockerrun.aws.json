@@ -24,7 +24,7 @@
         },
         {
             "name": "nginx",
-            "image": "shadrach19/nginx",
+            "image": "shadrach19/multi-nginx",
             "essential": true,
             "memory": 128,
             "portMappings": [
