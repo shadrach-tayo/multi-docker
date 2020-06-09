@@ -21,3 +21,15 @@ after_success:
   - docker push shadrach19/multi-nginx
   - docker push shadrach19/multi-server
   - docker push shadrach19/multi-worker
+
+  deploy:
+    provider: elasticbeanstalk
+    app: "multi-docker"
+    env: "MultiDocker-env"
+    region: "af-south-1"
+    bucket_name: "elasticbeanstalk-af-south-1-751808579985"
+    bucket_path: "multi-docker"
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
